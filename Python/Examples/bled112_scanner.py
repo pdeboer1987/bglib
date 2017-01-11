@@ -139,7 +139,7 @@ Sample Output Explanation:
     )
 
     # set all defaults for options
-    p.set_defaults(port="/dev/ttyACM0", baud=115200, interval=0xC8, window=0xC8, display="trpsabd", uuid=[], mac=[], rssi=0, active=False, quiet=False, friendly=False)
+    p.set_defaults(port="COM6", baud=256000, interval=0xC8, window=0xC8, display="trpsabd", uuid=[], mac=[], rssi=0, active=False, quiet=False, friendly=False)
 
     # create serial port options argument group
     group = optparse.OptionGroup(p, "Serial Port Options")
@@ -275,7 +275,7 @@ Sample Output Explanation:
     # open serial port for BGAPI access
     try:
         ser = serial.Serial(port=options.port, baudrate=options.baud, timeout=1)
-    except serial.SerialException as e:
+    except serial.SerialException, e:
         print "\n================================================================"
         print "Port error (name='%s', baud='%ld'): %s" % (options.port, options.baud, e)
         print "================================================================"
@@ -352,7 +352,7 @@ def bgapi_parse(b):
     if bgapi_rx_expected_length > 0 and len(bgapi_rx_buffer) == bgapi_rx_expected_length:
         #print '<=[ ' + ' '.join(['%02X' % b for b in bgapi_rx_buffer ]) + ' ]'
         packet_type, payload_length, packet_class, packet_command = bgapi_rx_buffer[:4]
-        bgapi_rx_payload = b''.join(chr(i) for i in bgapi_rx_buffer[4:])
+        bgapi_rx_payload = ''.join(chr(i) for i in bgapi_rx_buffer[4:])
         if packet_type & 0x80 == 0x00: # response
             bgapi_filler = 0
         else: # event
